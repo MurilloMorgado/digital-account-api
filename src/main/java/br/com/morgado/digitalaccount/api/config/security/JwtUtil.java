@@ -13,11 +13,10 @@ import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtUtil {
-    
+
     private final String JWT_SECRET = "62e0f029-5c56-4f55-b649-b81952b78802";
     private final long UMA_HORA = 3600000;
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
+    private final SecretKey key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
 
     public String generateToken(String username) {
         return Jwts.builder()
@@ -28,7 +27,7 @@ public class JwtUtil {
                 .compact();
     }
 
-        public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
