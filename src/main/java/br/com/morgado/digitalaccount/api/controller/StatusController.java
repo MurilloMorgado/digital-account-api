@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
  * This endpoint can be used to verify if the API is running and reachable.
  */
 @RestController
-@RequestMapping("/status")
+@RequestMapping("/api/status")
 public class StatusController {
 
      /**
