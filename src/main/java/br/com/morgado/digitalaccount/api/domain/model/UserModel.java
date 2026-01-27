@@ -1,6 +1,7 @@
 package br.com.morgado.digitalaccount.api.domain.model;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Table(name = "USERS")
 public class UserModel implements UserDetails {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID")
@@ -32,7 +33,7 @@ public class UserModel implements UserDetails {
 
     @Column(name = "USER_NAME")
     private String userName;
-    
+
     @Column(name = "EMAIL")
     private String email;
 
@@ -41,9 +42,9 @@ public class UserModel implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return List.of();
     }
-    
+
     @Override
     public String getPassword() {
         return password;
@@ -54,5 +55,24 @@ public class UserModel implements UserDetails {
         return email;
     }
 
-    
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }
