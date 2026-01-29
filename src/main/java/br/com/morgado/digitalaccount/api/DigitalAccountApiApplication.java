@@ -23,7 +23,7 @@ public class DigitalAccountApiApplication {
 			UserModel user = new UserModel();
 			user.setEmail("murillo@hotmail.com");
 			user.setFullName("Murillo");
-			user.setPassword(passwordEncoder.encode("Maria123"));
+			user.setPassword(passwordEncoder.encode("Morgado123"));
 			user.setUserName("Mmorgado");
 
 			userRepository.save(user);
