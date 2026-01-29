@@ -1,14 +1,15 @@
 package br.com.morgado.digitalaccount.api.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.morgado.digitalaccount.api.config.security.JwtUtil;
 import br.com.morgado.digitalaccount.api.dto.request.LoginRequest;
-import br.com.morgado.digitalaccount.api.dto.response.LoginResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -16,12 +17,15 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthController {
 
-    private final JwtUtil jwtUtil;
+    private final AuthenticationManager authenticationManager;
     
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<Authentication> login(@RequestBody LoginRequest request) {
 
-        String token = jwtUtil.generateToken(request.getUserName());
-        return ResponseEntity.ok(new LoginResponse(token));
+        var authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
+        
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+
+        return ResponseEntity.ok(authentication);
     }
 }
