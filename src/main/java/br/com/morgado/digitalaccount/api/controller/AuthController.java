@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.morgado.digitalaccount.api.domain.authentication.TokenService;
+import br.com.morgado.digitalaccount.api.domain.model.UserModel;
 import br.com.morgado.digitalaccount.api.dto.request.LoginRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -18,14 +20,15 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
+    private final TokenService tokenService;
     
     @PostMapping("/login")
-    public ResponseEntity<Authentication> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest request) {
 
         var authenticationToken = new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword());
-        
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        String tokenAcess = tokenService.generateToken((UserModel)authentication.getPrincipal());
 
-        return ResponseEntity.ok(authentication);
+        return ResponseEntity.ok(tokenAcess);
     }
 }
