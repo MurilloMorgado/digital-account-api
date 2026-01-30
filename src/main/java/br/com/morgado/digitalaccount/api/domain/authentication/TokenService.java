@@ -33,6 +33,20 @@ public class TokenService {
         }
     }
 
+    public String generateRefreshToken(UserModel user){
+        try {
+            Algorithm algorithm = Algorithm.HMAC256("12345678");
+            return JWT.create()
+                    .withIssuer("Digital Account")
+                    .withSubject(user.getId().toString())
+                    .withExpiresAt(expirest(60))
+                    .sign(algorithm);
+        } catch (JWTCreationException exception) {
+            // TODO create custom exception
+            throw new InternalError("Error generating JWT access refresh token.");
+        }
+    }
+
     private Instant expirest(Integer minutes) {
         return LocalDateTime.now().plusMinutes(minutes).toInstant(ZoneOffset.of("-03:00"));
     }

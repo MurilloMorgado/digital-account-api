@@ -23,7 +23,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
-        return http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        return http
+        .authorizeHttpRequests(req -> req
+            .requestMatchers("/api/auth/login", "/api/auth/refresh-token").permitAll()
+            .requestMatchers("/h2-console/**").permitAll()
+            .anyRequest().authenticated()
+        
+        )
+        .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .csrf(csrf -> csrf.disable())
         .addFilterBefore(filterTokenAcess, UsernamePasswordAuthenticationFilter.class)
         .build();
@@ -39,23 +47,5 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    // @Bean
-    // public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtFilter)
-    //         throws Exception {
-
-    //     http
-    //         .csrf(csrf -> csrf.disable())
-    //         .authorizeHttpRequests(auth -> auth
-    //                 .requestMatchers("/api/status").permitAll()
-    //                 .requestMatchers("/api/auth/**").permitAll()
-    //                 .requestMatchers("/h2-console/**").permitAll()
-    //                 .anyRequest().authenticated())
-    //         .httpBasic(httpBasic -> httpBasic.disable())
-    //         .formLogin(form -> form.disable())
-    //         .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
-    //         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-    //     return http.build();
-    // }
 }
 
