@@ -2,47 +2,18 @@ package br.com.morgado.digitalaccount.api.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
-import br.com.morgado.digitalaccount.api.repository.AccountRepository;
-import br.com.morgado.digitalaccount.api.service.implementacao.AccountServiceImpl;
-import lombok.RequiredArgsConstructor;
 
-@Service
-@RequiredArgsConstructor
-public class AccountService implements AccountServiceImpl {
+public interface AccountService {
 
-    private final AccountRepository accountRepository;
+    List<AccountModel> findAllAccounts();
 
-    @Override
-    public List<AccountModel> findAllAccounts() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAllAccounts'");
-    }
+    AccountModel findAccountById(Long idAccount);
 
-    @Override
-    public AccountModel findAccountById(Long idAccount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAccountById'");
-    }
+    Long createAccount(AccountModel account);
 
-    @Override
-    public Long createAccount(AccountModel account) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createAccount'");
-    }
+    void updateAccountDetails(Long idAccount, AccountModel account);
 
-    @Override
-    public void updateAccountDetails(Long idAccount, AccountModel account) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAccountDetails'");
-    }
+    void deleteAccount(Long idAccount);
 
-    @Override
-    public void deleteAccount(Long idAccount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAccount'");
-    }
-    
 }
