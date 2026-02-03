@@ -2,6 +2,7 @@ package br.com.morgado.digitalaccount.api.service.implementacao;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
@@ -30,15 +31,24 @@ public class AccountServiceImpl implements AccountService {
 
             return accounts;
 
-        } catch (Exception e) {
+        } catch (DataAccessException e) {
             throw new DatabaseException("Error accessing the database.", e);
         }
     }
 
     @Override
     public AccountModel findAccountById(Long idAccount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAccountById'");
+        try {
+
+            AccountModel account = accountRepository.findById(idAccount)
+                    .orElseThrow(() -> new ResourceNotFoundException("No account found by ID: " + idAccount));
+
+            return account;
+
+        } catch (DataAccessException e) {
+            throw new DatabaseException("Error accessing the database.", e);
+        }
+
     }
 
     @Override
