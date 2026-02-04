@@ -40,7 +40,7 @@ public class DigitalAccountApiApplication {
 			AccountModel account = new AccountModel();
 			account.setAgency(1234L);
 			account.setCurrentAccount(567890L);
-			account.setCliente(user.getFullName());
+			account.setCustomer(user.getFullName());
 			account.setBalance(BigDecimal.ZERO);
 			account.setBank("Digital Bank");
 			account.setAccountType("CHECKING");

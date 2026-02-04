@@ -31,8 +31,8 @@ public class AccountModel {
     @Column(name = "CURRENT_ACCOUNT")
     private Long currentAccount;
 
-    @Column(name = "CLIENTE")
-    private String cliente;
+    @Column(name = "CUSTOMER")
+    private String customer;
 
     @Column(name = "BALANCE")
     private BigDecimal balance;

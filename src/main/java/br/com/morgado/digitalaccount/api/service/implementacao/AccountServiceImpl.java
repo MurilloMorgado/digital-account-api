@@ -1,15 +1,18 @@
 package br.com.morgado.digitalaccount.api.service.implementacao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.exception.AlreadyExistsException;
 import br.com.morgado.digitalaccount.api.exception.DatabaseException;
 import br.com.morgado.digitalaccount.api.exception.ResourceNotFoundException;
 import br.com.morgado.digitalaccount.api.repository.AccountRepository;
 import br.com.morgado.digitalaccount.api.service.AccountService;
+import jakarta.persistence.EntityExistsException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -53,8 +56,15 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public Long createAccount(AccountModel account) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'createAccount'");
+
+        String customer = account.getCustomer();
+        Optional<AccountModel> ac = accountRepository.findByCustomer(customer);
+
+        if(ac.isPresent()){
+            throw new AlreadyExistsException("Account already exists for the given customer: " + customer);
+        }
+
+        return accountRepository.save(account).getId();
     }
 
     @Override
