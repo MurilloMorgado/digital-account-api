@@ -3,6 +3,7 @@ package br.com.morgado.digitalaccount.api.service.implementacao;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import br.com.morgado.digitalaccount.api.exception.DatabaseException;
 import br.com.morgado.digitalaccount.api.exception.ResourceNotFoundException;
 import br.com.morgado.digitalaccount.api.repository.AccountRepository;
 import br.com.morgado.digitalaccount.api.service.AccountService;
-import jakarta.persistence.EntityExistsException;
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -60,7 +61,7 @@ public class AccountServiceImpl implements AccountService {
         String customer = account.getCustomer();
         Optional<AccountModel> ac = accountRepository.findByCustomer(customer);
 
-        if(ac.isPresent()){
+        if (ac.isPresent()) {
             throw new AlreadyExistsException("Account already exists for the given customer: " + customer);
         }
 
@@ -69,14 +70,20 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void updateAccountDetails(Long idAccount, AccountModel account) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateAccountDetails'");
+        AccountModel accountModel =  findAccountById(idAccount);
+
+        BeanUtils.copyProperties(account, accountModel, "id");
+
+        accountRepository.save(accountModel);
     }
 
     @Override
     public void deleteAccount(Long idAccount) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteAccount'");
+
+        findAccountById(idAccount);
+
+        accountRepository.deleteById(idAccount);
+
     }
 
 }

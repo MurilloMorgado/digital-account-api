@@ -3,7 +3,6 @@ package br.com.morgado.digitalaccount.api.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,12 +43,14 @@ public class AccountController {
     }
 
     @PutMapping("/{idAccount}/account")
-    public ResponseEntity<Void> updateAccountDetails() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<Void> updateAccountDetails(@PathVariable Long idAccount, @RequestBody @Valid AccountModel account) {
+        accountService.updateAccountDetails(idAccount, account);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{idAccount}")
-    public ResponseEntity<Void> deleteAccount() {
-        return ResponseEntity.ok().body(null);
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long idAccount) {
+        accountService.deleteAccount(idAccount);
+        return ResponseEntity.ok().build();
     }
 }
