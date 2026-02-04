@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
 import br.com.morgado.digitalaccount.api.service.AccountService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +26,14 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping
-    public ResponseEntity<List<AccountModel>> findAllAccounts() {
-        List<AccountModel> accounts = accountService.findAllAccounts();
+    public ResponseEntity<List<AccountResponse>> findAllAccounts() {
+        List<AccountResponse> accounts = accountService.findAllAccounts();
         return ResponseEntity.ok().body(accounts);
     }
 
     @GetMapping("/{idAccount}/account")
-    public ResponseEntity<AccountModel> findAccountById(@PathVariable Long idAccount) {
-        AccountModel account = accountService.findAccountById(idAccount);
+    public ResponseEntity<AccountResponse> findAccountById(@PathVariable Long idAccount) {
+        AccountResponse account = accountService.findAccountById(idAccount);
         return ResponseEntity.ok().body(account);
     }
 

@@ -3,6 +3,7 @@ package br.com.morgado.digitalaccount.api.domain.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,4 +58,19 @@ public class AccountModel {
 
     @Column(name = "LAST_TRANSACTION")
     private Date lastTransaction;
+
+    public AccountResponse toResponse() {
+        return new AccountResponse(
+                agency,
+                currentAccount,
+                customer,
+                balance,
+                bank,
+                accountType,
+                status,
+                overdraftLimit,
+                openingDate,
+                closingDate,
+                lastTransaction);
+    }
 }
