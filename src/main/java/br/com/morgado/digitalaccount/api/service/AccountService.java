@@ -2,17 +2,18 @@ package br.com.morgado.digitalaccount.api.service;
 
 import java.util.List;
 
-import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.dto.request.AccountRequest;
+import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
 
 public interface AccountService {
 
-    List<AccountModel> findAllAccounts();
+    List<AccountResponse> findAllAccounts();
 
-    AccountModel findAccountById(Long idAccount);
+    AccountResponse findAccountById(Long idAccount);
 
-    Long createAccount(AccountModel account);
+    Long createAccount(AccountRequest account);
 
-    void updateAccountDetails(Long idAccount, AccountModel account);
+    void updateAccountDetails(Long idAccount, AccountRequest account);
 
     void deleteAccount(Long idAccount);
 
