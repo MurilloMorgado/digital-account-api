@@ -3,6 +3,7 @@ package br.com.morgado.digitalaccount.api.domain.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import br.com.morgado.digitalaccount.api.dto.request.AccountRequest;
 import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,5 +73,14 @@ public class AccountModel {
                 openingDate,
                 closingDate,
                 lastTransaction);
+    }
+
+    public AccountModel(AccountRequest accountRequest) {
+        this.agency = accountRequest.getAgency();
+        this.currentAccount = accountRequest.getCurrentAccount();
+        this.customer = accountRequest.getCustomer();
+        this.bank = accountRequest.getBank();
+        this.accountType = accountRequest.getAccountType();
+
     }
 }

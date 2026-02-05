@@ -9,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.dto.request.AccountRequest;
 import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
 import br.com.morgado.digitalaccount.api.exception.AlreadyExistsException;
 import br.com.morgado.digitalaccount.api.exception.DatabaseException;
@@ -58,7 +59,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Long createAccount(AccountModel account) {
+    public Long createAccount(AccountRequest account) {
 
         String customer = account.getCustomer();
         Optional<AccountModel> ac = accountRepository.findByCustomer(customer);
@@ -67,11 +68,13 @@ public class AccountServiceImpl implements AccountService {
             throw new AlreadyExistsException("Account already exists for the given customer: " + customer);
         }
 
-        return accountRepository.save(account).getId();
+        AccountModel accountModel = new AccountModel(account);
+
+        return accountRepository.save(accountModel).getId();
     }
 
     @Override
-    public void updateAccountDetails(Long idAccount, AccountModel account) {
+    public void updateAccountDetails(Long idAccount, AccountRequest account) {
         AccountModel accountModel = accountRepository.findById(idAccount)
                 .orElseThrow(() -> new ResourceNotFoundException("No account found by ID: " + idAccount));
 
