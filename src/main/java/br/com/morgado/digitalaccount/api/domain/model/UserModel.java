@@ -6,6 +6,8 @@ import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.morgado.digitalaccount.api.dto.request.UserRequest;
+import br.com.morgado.digitalaccount.api.dto.response.UserResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -75,4 +77,20 @@ public class UserModel implements UserDetails {
         return true;
     }
 
+    public UserResponse toResponse() {
+        return new UserResponse(
+                id,
+                fullName,
+                userName,
+                email,
+                password);
+    }
+
+    public UserModel(UserRequest userRequest) {
+
+        this.fullName = userRequest.getFullName();
+        this.userName = userRequest.getFullName();
+        this.email = userRequest.getEmail();
+        this.password = userRequest.getPassword();
+    }
 }
