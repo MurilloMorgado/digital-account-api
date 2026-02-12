@@ -25,7 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         return http
         .authorizeHttpRequests(req -> req
-            .requestMatchers("/api/auth/login", "/api/auth/refresh-token").permitAll()
+            .requestMatchers("/api/auth/login", "/api/auth/refresh-token", "/api/users/create", "/api/users/verify-account").permitAll()
             .requestMatchers("/h2-console/**").permitAll()
             .anyRequest().authenticated()
         
