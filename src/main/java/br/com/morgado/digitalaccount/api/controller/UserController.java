@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.morgado.digitalaccount.api.dto.request.UserRequest;
@@ -37,7 +38,7 @@ public class UserController {
         return ResponseEntity.ok().body(account);
     }
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Long> createUser(@RequestBody @Valid UserRequest UserRequest) {
         Long idAccount = userService.createUser(UserRequest);
         return ResponseEntity.ok().body(idAccount);
@@ -54,5 +55,11 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long idUser) {
         userService.deleteUser(idUser);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/verify-account")
+    public ResponseEntity<String> verifyEmail(@RequestParam String code){
+        userService.verifyEmail(code);
+        return ResponseEntity.ok().body(null);
     }
 }

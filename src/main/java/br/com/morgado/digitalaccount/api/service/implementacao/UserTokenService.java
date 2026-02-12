@@ -16,7 +16,7 @@ public class UserTokenService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmailIgnoreCase(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
+        return userRepository.findByEmailIgnoreCaseAndVerifiedEmailTrue(username).orElseThrow(() -> new UsernameNotFoundException("User " + username + " not found"));
     }
     
 }

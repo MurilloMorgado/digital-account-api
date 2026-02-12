@@ -32,7 +32,7 @@ public class FilterTokenAcess extends OncePerRequestFilter {
 
         if (token != null) {
             String email = tokenService.verifyToken(token);
-            UserModel user = userRepository.findByEmailIgnoreCase(email).orElseThrow();
+            UserModel user = userRepository.findByEmailIgnoreCaseAndVerifiedEmailTrue(email).orElseThrow();
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);

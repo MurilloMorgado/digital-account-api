@@ -1,13 +1,16 @@
 package br.com.morgado.digitalaccount.api.domain.model;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.morgado.digitalaccount.api.dto.request.UserRequest;
 import br.com.morgado.digitalaccount.api.dto.response.UserResponse;
+import br.com.morgado.digitalaccount.api.exception.BusinessRuleException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +44,15 @@ public class UserModel implements UserDetails {
 
     @Column(name = "PASSWORD")
     private String password;
+
+    @Column(name = "VERIFIED_EMAIL")
+    private boolean verifiedEmail;
+
+    @Column(name = "TOKEN")
+    private String token;
+
+    @Column(name = "TOKEN_EXPIRATION")
+    private LocalDateTime tokenExpiration;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -83,7 +95,9 @@ public class UserModel implements UserDetails {
                 fullName,
                 userName,
                 email,
-                password);
+                password,
+                verifiedEmail
+            );
     }
 
     public UserModel(UserRequest userRequest) {
@@ -92,5 +106,19 @@ public class UserModel implements UserDetails {
         this.userName = userRequest.getFullName();
         this.email = userRequest.getEmail();
         this.password = userRequest.getPassword();
+        this.verifiedEmail = false;
+        this.token = UUID.randomUUID().toString();
+        this.tokenExpiration = LocalDateTime.now().plusMinutes(30);
+    }
+
+    public void verify(){
+
+        if(tokenExpiration.isBefore(LocalDateTime.now())){
+            throw new BusinessRuleException("Verification link has expired");
+        }
+
+        this.verifiedEmail = true;
+        this.token = null;
+        this.tokenExpiration = null;
     }
 }

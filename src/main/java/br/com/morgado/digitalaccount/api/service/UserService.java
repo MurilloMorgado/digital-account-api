@@ -16,4 +16,6 @@ public interface UserService {
     void updateUserDetails(Long idUser, UserRequest userRequest);
 
     void deleteUser(Long idUser);
+
+    void verifyEmail(String code);
 }

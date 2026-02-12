@@ -33,6 +33,7 @@ public class DigitalAccountApiApplication {
 			user.setFullName("Murillo");
 			user.setPassword(passwordEncoder.encode("Morgado123"));
 			user.setUserName("Mmorgado");
+			user.setVerifiedEmail(true);
 
 			userRepository.save(user);
 
