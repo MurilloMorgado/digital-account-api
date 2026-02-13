@@ -60,6 +60,6 @@ public class UserController {
     @GetMapping("/verify-account")
     public ResponseEntity<String> verifyEmail(@RequestParam String code){
         userService.verifyEmail(code);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body("Account successfully verified!");
     }
 }
