@@ -9,13 +9,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UserResponse {
 
+    private Long id;
+
     private String fullName;
+
+    private String userName;
 
     private String email;
 
-    private Long agency;
+    private String password;
 
-    private Long currentAccount;
-
-    private String bank;
+    private boolean verifiedEmail;
 }
