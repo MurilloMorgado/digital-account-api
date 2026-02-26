@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.domain.model.TransactionModel;
 import br.com.morgado.digitalaccount.api.domain.model.UserModel;
 import br.com.morgado.digitalaccount.api.repository.AccountRepository;
+import br.com.morgado.digitalaccount.api.repository.TransactionRepository;
 import br.com.morgado.digitalaccount.api.repository.UserRepository;
 
 @SpringBootApplication
@@ -23,7 +25,7 @@ public class DigitalAccountApiApplication {
 
 	@Bean
 	public CommandLineRunner dataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder,
-			AccountRepository accountRepository) {
+			AccountRepository accountRepository, TransactionRepository transactionRepository) {
 
 		return args -> {
 
@@ -50,6 +52,16 @@ public class DigitalAccountApiApplication {
 			account.setOpeningDate(new Date());
 
 			accountRepository.save(account);
+
+			//Criando uma transação
+			TransactionModel transaction = new TransactionModel();
+
+			transaction.setSourceAccount("567890L");
+			transaction.setDestinationAccount(null);
+			transaction.setType("Deposito");
+			transaction.setAmount(BigDecimal.valueOf(1500.50));
+
+			transactionRepository.save(transaction);
 		};
 	}
 
