@@ -16,7 +16,7 @@ import br.com.morgado.digitalaccount.api.service.TransactionService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/transactions")
+@RequestMapping("/api/transactions")
 @RequiredArgsConstructor
 public class TransactionController {
 
@@ -46,10 +46,10 @@ public class TransactionController {
         return ResponseEntity.ok().body(idTransaction);
     }
 
-    @PostMapping("/{destinationAccount}/transfer")
-    public ResponseEntity<Long> transferRequest(@PathVariable String destinationAccount,
+    @PostMapping("/{idAccount}/transfer")
+    public ResponseEntity<Long> transferRequest(@PathVariable Long idAccount,
             @RequestBody TransactionRequest transactionRequest) {
-        Long idTransaction = transactionService.transferRequest(destinationAccount, transactionRequest);
+        Long idTransaction = transactionService.transferRequest(idAccount, transactionRequest);
         return ResponseEntity.ok().body(idTransaction);
     }
 

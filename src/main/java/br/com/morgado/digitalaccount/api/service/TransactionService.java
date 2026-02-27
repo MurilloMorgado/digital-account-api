@@ -15,6 +15,6 @@ public interface TransactionService {
 
     Long withdrawRequest(Long idAccount, TransactionRequest transaction);
 
-    Long transferRequest(String destinationAccount, TransactionRequest transaction);
+    Long transferRequest(Long idAccount, TransactionRequest transaction);
 
 }

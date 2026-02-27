@@ -5,12 +5,15 @@ import java.util.List;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
 import br.com.morgado.digitalaccount.api.domain.model.TransactionModel;
 import br.com.morgado.digitalaccount.api.dto.request.TransactionRequest;
 import br.com.morgado.digitalaccount.api.exception.DatabaseException;
 import br.com.morgado.digitalaccount.api.exception.ResourceNotFoundException;
+import br.com.morgado.digitalaccount.api.repository.AccountRepository;
 import br.com.morgado.digitalaccount.api.repository.TransactionRepository;
 import br.com.morgado.digitalaccount.api.service.TransactionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -18,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class TransactionServiceImpl implements TransactionService {
 
     private final TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public List<TransactionModel> findAllTransactions() {
@@ -50,21 +54,55 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    @Transactional
     public Long depositRequest(Long idAccount, TransactionRequest transaction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'depositRequest'");
+
+        AccountModel account = accountRepository.findById(idAccount)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        account.deposit(transaction.getAmount());
+
+        TransactionModel tx = TransactionModel.deposit(account, transaction.getAmount());
+
+        transactionRepository.save(tx);
+        return tx.getId();
     }
 
     @Override
+    @Transactional
     public Long withdrawRequest(Long idAccount, TransactionRequest transaction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'withdrawRequest'");
+
+        AccountModel account = accountRepository.findById(idAccount)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        account.withdraw(transaction.getAmount());
+
+        TransactionModel tx = TransactionModel.withdraw(account, transaction.getAmount());
+
+        transactionRepository.save(tx);
+        return tx.getId();
     }
 
     @Override
-    public Long transferRequest(String destinationAccount, TransactionRequest transaction) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'transferRequest'");
+    @Transactional
+    public Long transferRequest(Long idAccount, TransactionRequest request) {
+
+        AccountModel origin = accountRepository.findByCurrentAccount(request.getSourceAccount().getCurrentAccount())
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        AccountModel destination = accountRepository.findByCurrentAccount(request.getDestinationAccount().getCurrentAccount())
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+
+        origin.withdraw(request.getAmount());
+        destination.deposit(request.getAmount());
+
+        TransactionModel transaction = TransactionModel.transfer(origin, destination, request.getAmount());
+
+        accountRepository.save(origin);
+        accountRepository.save(destination);
+        transactionRepository.save(transaction);
+
+        return transaction.getId();
     }
 
 }
