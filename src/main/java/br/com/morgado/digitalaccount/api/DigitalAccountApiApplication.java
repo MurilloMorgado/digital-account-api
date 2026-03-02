@@ -10,8 +10,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
+import br.com.morgado.digitalaccount.api.domain.model.TransactionModel;
 import br.com.morgado.digitalaccount.api.domain.model.UserModel;
 import br.com.morgado.digitalaccount.api.repository.AccountRepository;
+import br.com.morgado.digitalaccount.api.repository.TransactionRepository;
 import br.com.morgado.digitalaccount.api.repository.UserRepository;
 
 @SpringBootApplication
@@ -23,7 +25,7 @@ public class DigitalAccountApiApplication {
 
 	@Bean
 	public CommandLineRunner dataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder,
-			AccountRepository accountRepository) {
+			AccountRepository accountRepository, TransactionRepository transactionRepository) {
 
 		return args -> {
 
@@ -37,12 +39,12 @@ public class DigitalAccountApiApplication {
 
 			userRepository.save(user);
 
-			// Criação da conta
+			// Criação da conta1
 			AccountModel account = new AccountModel();
 			account.setAgency(1234L);
 			account.setCurrentAccount(567890L);
 			account.setCustomer(user.getFullName());
-			account.setBalance(BigDecimal.ZERO);
+			account.setBalance(BigDecimal.valueOf(1500.50));
 			account.setBank("Digital Bank");
 			account.setAccountType("CHECKING");
 			account.setStatus("ACTIVE");
@@ -50,6 +52,30 @@ public class DigitalAccountApiApplication {
 			account.setOpeningDate(new Date());
 
 			accountRepository.save(account);
+
+			// Criação da conta2
+			AccountModel account2 = new AccountModel();
+			account2.setAgency(1234L);
+			account2.setCurrentAccount(567880L);
+			account2.setCustomer("João Silva");
+			account2.setBalance(BigDecimal.valueOf(0));
+			account2.setBank("Digital Bank");
+			account2.setAccountType("CHECKING");
+			account2.setStatus("ACTIVE");
+			account2.setOverdraftLimit(new BigDecimal("1000.00"));
+			account2.setOpeningDate(new Date());
+
+			accountRepository.save(account2);
+
+			// Criando uma transação
+			TransactionModel transaction = new TransactionModel();
+
+			transaction.setSourceAccount(account);
+			transaction.setDestinationAccount(null);
+			transaction.setType("Deposito");
+			transaction.setAmount(BigDecimal.valueOf(1500.50));
+
+			transactionRepository.save(transaction);
 		};
 	}
 

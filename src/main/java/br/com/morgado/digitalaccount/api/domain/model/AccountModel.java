@@ -5,6 +5,7 @@ import java.util.Date;
 
 import br.com.morgado.digitalaccount.api.dto.request.AccountRequest;
 import br.com.morgado.digitalaccount.api.dto.response.AccountResponse;
+import br.com.morgado.digitalaccount.api.exception.BusinessRuleException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -83,4 +84,29 @@ public class AccountModel {
         this.accountType = accountRequest.getAccountType();
 
     }
+
+    public void deposit(BigDecimal amount) {
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessRuleException("Invalid withdrawal amount.");
+        }
+
+        this.balance = this.balance.add(amount);
+
+    }
+
+    public void withdraw(BigDecimal amount) {
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new BusinessRuleException("Invalid withdrawal amount.");
+        }
+
+        if (this.balance.compareTo(amount) < 0) {
+            throw new BusinessRuleException("Insufficient funds.");
+        }
+
+        this.balance = this.balance.subtract(amount);
+
+    }
+
 }
