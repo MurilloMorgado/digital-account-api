@@ -11,10 +11,10 @@ public interface TransactionService {
 
     TransactionModel findTransactionById(Long idTransaction);
 
-    Long depositRequest(Long idAccount, TransactionRequest transaction);
+    Long depositRequest(TransactionRequest transaction);
 
-    Long withdrawRequest(Long idAccount, TransactionRequest transaction);
+    Long withdrawRequest(TransactionRequest transaction);
 
-    Long transferRequest(Long idAccount, TransactionRequest transaction);
+    Long transferRequest(TransactionRequest transaction);
 
 }

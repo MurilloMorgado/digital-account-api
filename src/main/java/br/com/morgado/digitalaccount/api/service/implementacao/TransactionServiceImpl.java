@@ -55,7 +55,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Long depositRequest(Long idAccount, TransactionRequest transaction) {
+    public Long depositRequest(TransactionRequest transaction) {
 
         AccountModel account = findValidatedAccount(transaction.getDestinationAccount().getCurrentAccount());
 
@@ -69,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Long withdrawRequest(Long idAccount, TransactionRequest transaction) {
+    public Long withdrawRequest(TransactionRequest transaction) {
 
         AccountModel account = findValidatedAccount(transaction.getSourceAccount().getCurrentAccount());
 
@@ -83,7 +83,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
-    public Long transferRequest(Long idAccount, TransactionRequest request) {
+    public Long transferRequest(TransactionRequest request) {
 
         AccountModel origin = findValidatedAccount(request.getSourceAccount().getCurrentAccount());
 

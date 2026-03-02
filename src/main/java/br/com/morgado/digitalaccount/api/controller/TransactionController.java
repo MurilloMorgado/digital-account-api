@@ -34,22 +34,21 @@ public class TransactionController {
         return ResponseEntity.ok().body(Transaction);
     }
 
-    @PostMapping("/{idAccount}/deposit")
-    public ResponseEntity<Long> depositRequest(@PathVariable Long idAccount, @RequestBody TransactionRequest transactionRequest) {
-        Long idTransaction = transactionService.depositRequest(idAccount, transactionRequest);
+    @PostMapping("/deposit")
+    public ResponseEntity<Long> depositRequest(@RequestBody TransactionRequest transactionRequest) {
+        Long idTransaction = transactionService.depositRequest(transactionRequest);
         return ResponseEntity.ok().body(idTransaction);
     }
 
-    @PostMapping("/{idAccount}/withdraw")
-    public ResponseEntity<Long> withdrawRequest(@PathVariable Long idAccount, @RequestBody TransactionRequest transactionRequest) {
-        Long idTransaction = transactionService.withdrawRequest(idAccount, transactionRequest);
+    @PostMapping("/withdraw")
+    public ResponseEntity<Long> withdrawRequest(@RequestBody TransactionRequest transactionRequest) {
+        Long idTransaction = transactionService.withdrawRequest(transactionRequest);
         return ResponseEntity.ok().body(idTransaction);
     }
 
-    @PostMapping("/{idAccount}/transfer")
-    public ResponseEntity<Long> transferRequest(@PathVariable Long idAccount,
-            @RequestBody TransactionRequest transactionRequest) {
-        Long idTransaction = transactionService.transferRequest(idAccount, transactionRequest);
+    @PostMapping("/transfer")
+    public ResponseEntity<Long> transferRequest(@RequestBody TransactionRequest transactionRequest) {
+        Long idTransaction = transactionService.transferRequest(transactionRequest);
         return ResponseEntity.ok().body(idTransaction);
     }
 
