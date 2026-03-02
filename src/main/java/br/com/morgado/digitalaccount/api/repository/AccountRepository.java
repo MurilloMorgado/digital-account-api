@@ -12,4 +12,7 @@ public interface AccountRepository extends JpaRepository<AccountModel, Long>{
     Optional<AccountModel> findByCustomer(String customer);
 
     Optional<AccountModel> findByCurrentAccount(Long currentAccount);
+
+     Optional<AccountModel> findByCurrentAccountAndStatus(Long id, String status);
+
 }

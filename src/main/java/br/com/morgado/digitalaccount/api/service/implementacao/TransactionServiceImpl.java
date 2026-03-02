@@ -57,8 +57,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Long depositRequest(Long idAccount, TransactionRequest transaction) {
 
-        AccountModel account = accountRepository.findById(idAccount)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        AccountModel account = findValidatedAccount(transaction.getDestinationAccount().getCurrentAccount());
 
         account.deposit(transaction.getAmount());
 
@@ -72,8 +71,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Long withdrawRequest(Long idAccount, TransactionRequest transaction) {
 
-        AccountModel account = accountRepository.findById(idAccount)
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        AccountModel account = findValidatedAccount(transaction.getSourceAccount().getCurrentAccount());
 
         account.withdraw(transaction.getAmount());
 
@@ -87,11 +85,9 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public Long transferRequest(Long idAccount, TransactionRequest request) {
 
-        AccountModel origin = accountRepository.findByCurrentAccount(request.getSourceAccount().getCurrentAccount())
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        AccountModel origin = findValidatedAccount(request.getSourceAccount().getCurrentAccount());
 
-        AccountModel destination = accountRepository.findByCurrentAccount(request.getDestinationAccount().getCurrentAccount())
-                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+        AccountModel destination = findValidatedAccount(request.getDestinationAccount().getCurrentAccount());
 
         origin.withdraw(request.getAmount());
         destination.deposit(request.getAmount());
@@ -105,4 +101,12 @@ public class TransactionServiceImpl implements TransactionService {
         return transaction.getId();
     }
 
+    private AccountModel findValidatedAccount(Long idAccount) {
+
+        AccountModel account = accountRepository
+                .findByCurrentAccountAndStatus(idAccount, "ACTIVE")
+                .orElseThrow(() -> new ResourceNotFoundException("Account " + idAccount + " not validated or not found."));
+
+        return account;
+    }
 }
