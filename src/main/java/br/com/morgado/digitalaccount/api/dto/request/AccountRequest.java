@@ -13,6 +13,7 @@ public class AccountRequest {
 
     private Long currentAccount;
 
+    //TODO Criar um tipo Customer
     private String customer;
 
     private String bank;
