@@ -1,4 +1,4 @@
-package br.com.morgado.digitalaccount.api;
+package br.com.morgado.digitalaccount.api.AccountTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
