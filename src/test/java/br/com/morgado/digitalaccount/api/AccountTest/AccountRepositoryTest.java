@@ -24,12 +24,12 @@ public class AccountRepositoryTest {
     void shouldFindAccountByCustomer() {
 
         AccountModel account = new AccountModel();
-         account.setCustomer("12345");
+        account.setCustomer("12345");
         account.setBalance(BigDecimal.valueOf(100));
         repository.save(account);
 
         AccountModel result = repository.findByCustomer("12345")
-                                 .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
+                .orElseThrow(() -> new ResourceNotFoundException("Conta não encontrada"));
 
         assertEquals("12345", result.getCustomer());
     }
