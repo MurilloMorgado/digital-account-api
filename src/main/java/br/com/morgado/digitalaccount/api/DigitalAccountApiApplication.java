@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.morgado.digitalaccount.api.domain.model.AccountModel;
@@ -24,6 +25,7 @@ public class DigitalAccountApiApplication {
 	}
 
 	@Bean
+	@Profile("!test")
 	public CommandLineRunner dataInitializer(UserRepository userRepository, PasswordEncoder passwordEncoder,
 			AccountRepository accountRepository, TransactionRepository transactionRepository) {
 

@@ -37,7 +37,6 @@ public class AccountController {
         return ResponseEntity.ok().body(account);
     }
 
-    //TODO check when sending an empty body
     @PostMapping
     public ResponseEntity<Long> createAccount(@RequestBody @Valid AccountRequest account) {
         Long idAccount = accountService.createAccount(account);
